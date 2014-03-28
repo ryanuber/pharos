@@ -8,7 +8,6 @@ import (
 
 func main() {
 	fmt.Printf("pharos version %s\n", pharos.Version)
-	process := monitor.NewMonitoredCommand(
-		"true", 1)
+	process := monitor.NewMonitoredCommand("true", 1)
 	process.Monitor()
 }

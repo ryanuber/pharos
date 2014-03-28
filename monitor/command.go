@@ -6,11 +6,14 @@ import (
 	"time"
 )
 
+// MonitoredCommand represents a command that runs periodically to test
+// various conditions on a system.
 type MonitoredCommand struct {
 	command  string
 	interval int
 }
 
+// Simple method to create a new monitored command object
 func NewMonitoredCommand(command string, interval int) *MonitoredCommand {
 	return &MonitoredCommand{
 		command:  command,
@@ -18,6 +21,8 @@ func NewMonitoredCommand(command string, interval int) *MonitoredCommand {
 	}
 }
 
+// Monitor begins periodically executing a command and reporting success
+// or failure. It will probably run in a separate goroutine.
 func (m *MonitoredCommand) Monitor() error {
 	for {
 		cmd := exec.Command(m.command)
