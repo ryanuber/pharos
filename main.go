@@ -2,16 +2,23 @@ package main
 
 import (
 	"fmt"
-	"github.com/ryanuber/pharos/monitor"
-	"github.com/ryanuber/pharos/pharos"
+	"github.com/mitchellh/cli"
+	"os"
 )
 
 func main() {
-	fmt.Printf("pharos version %s\n", pharos.Version)
+	os.Exit(realMain())
+}
 
-	fmt.Println("starting to monitor 'true' (1s)")
-	go monitor.NewMonitoredCommand("true", 1).Monitor()
-
-	fmt.Println("starting to monitor 'false' (3s)")
-	monitor.NewMonitoredCommand("false", 3).Monitor()
+func realMain() int {
+	cli := &cli.CLI{
+		Args:     os.Args[1:],
+		Commands: Commands,
+	}
+	retval, err := cli.Run()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error running command: %s", err)
+		return 1
+	}
+	return retval
 }
