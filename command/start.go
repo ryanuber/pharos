@@ -1,9 +1,9 @@
 package command
 
 import (
+	"flag"
 	"fmt"
 	"github.com/mitchellh/cli"
-	"github.com/ryanuber/pharos/pharos"
 	"strings"
 )
 
@@ -24,7 +24,21 @@ Options:
 }
 
 func (c *StartCommand) Run(args []string) int {
-	c.Ui.Output(fmt.Sprintf("Pharos version %s", pharos.Version))
+	cmdFlags := flag.NewFlagSet("start", flag.ContinueOnError)
+	cmdFlags.Usage = func() {
+		c.Ui.Output(c.Help())
+	}
+
+	var configFile string
+
+	cmdFlags.StringVar(&configFile, "config-file", "", "path to config file")
+	if err := cmdFlags.Parse(args); err != nil {
+		c.Ui.Output(c.Help())
+		return 1
+	}
+
+	c.Ui.Output(fmt.Sprintf("Config file is %s", configFile))
+
 	return 0
 }
 
