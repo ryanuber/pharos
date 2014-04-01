@@ -12,7 +12,6 @@ type Config struct {
 
 	// Event upstreaming settings
 	EnableUpstreams bool
-	Upstreams       []*Upstream
 }
 
 func DefaultConfig() *Config {

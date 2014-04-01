@@ -4,6 +4,7 @@ import (
 	"flag"
 	"fmt"
 	"github.com/mitchellh/cli"
+	"github.com/ryanuber/pharos/pharos"
 	"strings"
 )
 
@@ -29,15 +30,21 @@ func (c *StartCommand) Run(args []string) int {
 		c.Ui.Output(c.Help())
 	}
 
-	var configFile string
+	var bindAddr string
 
-	cmdFlags.StringVar(&configFile, "config-file", "", "path to config file")
+	cmdFlags.StringVar(&bindAddr, "bind-addr", "", "bind address for Pharos")
 	if err := cmdFlags.Parse(args); err != nil {
 		c.Ui.Output(c.Help())
 		return 1
 	}
 
-	c.Ui.Output(fmt.Sprintf("Config file is %s", configFile))
+	config := pharos.DefaultConfig()
+	if bindAddr != "" {
+		config.BindAddr = bindAddr
+	}
+
+	p := pharos.NewPharos(config)
+	c.Ui.Output(fmt.Sprintf("%#v", p))
 
 	return 0
 }

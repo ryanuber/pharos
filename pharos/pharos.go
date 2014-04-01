@@ -1,11 +1,16 @@
 package pharos
 
 type Pharos struct {
-	config *Config
+	config    *Config
+	Upstreams []*Upstream
 }
 
-func NewPharos() *Pharos {
+func NewPharos(config *Config) *Pharos {
 	return &Pharos{
-		config: DefaultConfig(),
+		config: config,
 	}
+}
+
+func (p *Pharos) AddUpstream(upstream *Upstream) {
+	p.Upstreams = append(p.Upstreams, upstream)
 }
